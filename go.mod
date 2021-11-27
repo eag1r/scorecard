@@ -8,6 +8,7 @@ require (
 	cloud.google.com/go/pubsub v1.17.0
 	cloud.google.com/go/trace v0.1.0 // indirect
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.8
+	gitee.com/openeuler/go-gitee v0.0.0-20210824105152-bda4a7aaee37
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.3
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/golang/mock v1.6.0
@@ -37,6 +38,7 @@ require (
 
 require (
 	github.com/rhysd/actionlint v1.6.7
+	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
 	gotest.tools v2.2.0+incompatible
 )
 
@@ -46,6 +48,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.0 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20210428141323-04723f9f07d7 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
+	github.com/antihax/optional v1.0.0 // indirect
 	github.com/aws/aws-sdk-go v1.40.34 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.3.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.7.0 // indirect
@@ -93,7 +96,6 @@ require (
 	go.uber.org/multierr v1.7.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/net v0.0.0-20210825183410-e898025ed96a // indirect
-	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.0.0-20210925032602-92d5a993a665 // indirect
 	golang.org/x/text v0.3.7 // indirect

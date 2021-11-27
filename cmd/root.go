@@ -33,6 +33,7 @@ import (
 	"github.com/ossf/scorecard/v3/checker"
 	"github.com/ossf/scorecard/v3/checks"
 	"github.com/ossf/scorecard/v3/clients"
+	"github.com/ossf/scorecard/v3/clients/giteerepo"
 	"github.com/ossf/scorecard/v3/clients/githubrepo"
 	"github.com/ossf/scorecard/v3/clients/localdir"
 	docs "github.com/ossf/scorecard/v3/docs/checks"
@@ -67,6 +68,7 @@ const (
 const (
 	repoTypeLocal  = "local"
 	repoTypeGitHub = "GitHub"
+	repoTypeGitee  = "Gitee"
 )
 
 const (
@@ -211,15 +213,24 @@ func getRepoAccessors(ctx context.Context, uri string, logger *zap.Logger) (clie
 	var repo clients.Repo
 	var errLocal error
 	var errGitHub error
+	var errGitee error
 	if repo, errLocal = localdir.MakeLocalDirRepo(uri); errLocal == nil {
 		// Local directory.
 		return repo, localdir.CreateLocalDirClient(ctx, logger), repoTypeLocal, nil
 	}
 
+	// gitee URL.
+	if strings.Contains(uri, "gitee.com") {
+		if repo, errGitee = giteerepo.MakeGiteeRepo(uri); errGitee == nil {
+			// Gitee URL.
+			return repo, giteerepo.CreateGiteeRepoClient(ctx, logger), repoTypeGitHub, nil
+		}
+	}
 	if repo, errGitHub = githubrepo.MakeGithubRepo(uri); errGitHub == nil {
 		// GitHub URL.
 		return repo, githubrepo.CreateGithubRepoClient(ctx, logger), repoTypeGitHub, nil
 	}
+
 	return nil, nil, "",
 		sce.WithMessage(sce.ErrScorecardInternal, fmt.Sprintf("unspported URI: %s: [%v, %v]", uri, errLocal, errGitHub))
 }

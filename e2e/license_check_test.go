@@ -25,18 +25,15 @@ import (
 	scut "github.com/ossf/scorecard/v3/utests"
 )
 
-// TODO: use dedicated repo that don't change.
-// TODO: need negative results.
-var _ = Describe("E2E TEST:"+checks.CheckPinnedDependencies, func() {
-	Context("E2E TEST:Validating dependencies check is working", func() {
-		It("Should return dependencies check is working", func() {
+var _ = Describe("E2E TEST:"+checks.LicenseCheckPolicy, func() {
+	Context("E2E TEST:Validating license file check", func() {
+		It("Should return license check works", func() {
 			dl := scut.TestDetailLogger{}
-			repo, err := githubrepo.MakeGithubRepo("ossf-tests/scorecard-check-pinned-dependencies-e2e")
+			repo, err := githubrepo.MakeGithubRepo("ossf-tests/scorecard-check-dangerous-workflow-e2e")
 			Expect(err).Should(BeNil())
 			repoClient := githubrepo.CreateGithubRepoClient(context.Background(), logger)
 			err = repoClient.InitRepo(repo)
 			Expect(err).Should(BeNil())
-
 			req := checker.CheckRequest{
 				Ctx:        context.Background(),
 				RepoClient: repoClient,
@@ -45,14 +42,18 @@ var _ = Describe("E2E TEST:"+checks.CheckPinnedDependencies, func() {
 			}
 			expected := scut.TestReturn{
 				Error:         nil,
-				Score:         3,
-				NumberOfWarn:  149,
-				NumberOfInfo:  2,
+				Score:         checker.MaxResultScore,
+				NumberOfWarn:  0,
+				NumberOfInfo:  1,
 				NumberOfDebug: 0,
 			}
-			result := checks.PinnedDependencies(&req)
-			Expect(scut.ValidateTestReturn(nil, "dependencies check", &expected, &result, &dl)).Should(BeTrue())
-			Expect(repoClient.Close()).Should(BeNil())
+			result := checks.LicenseCheck(&req)
+
+			Expect(result.Error).Should(BeNil())
+			Expect(result.Pass).Should(BeTrue())
+
+			Expect(scut.ValidateTestReturn(nil, "license check", &expected, &result,
+				&dl)).Should(BeTrue())
 		})
 	})
 })
